@@ -41,6 +41,10 @@ You can specify which paths you wish to exclude with `exclude` method.
 It accepts string or regular expression. You can specify multiple paths by
 calling the `config.exclude` multiple times.
 
+Note that browsernizer still checks whether the browser is supported on
+these paths, it just doesn't redirect.  This is to ensure that the
+`request.env['browsernizer']` is available if needed.
+
 If you wish to completely prevent some browsers from accessing website
 (regardless of their version), just set browser version to `false`.
 
@@ -55,7 +59,12 @@ can declare it like this:
       !(browser.name == "Safari" && browser.mobile?)
     end
 
-Specifying location is optional. If you prefer handling unsupported browsers on
+By default any return value other than `false` is considered valid,
+including `nil`.
+
+Specifying location is optional.
+
+If you prefer handling unsupported browsers on
 your own, you can access browsernizer info from `request.env['browsernizer']`
 within your controller.
 
@@ -70,7 +79,6 @@ For example, you can set before filter to display flash notice:
     end
 
 You can also access `browser` and `version` variables from this env hash.
-
 
 ## Browsers
 
@@ -94,7 +102,6 @@ And some less popular:
 * Apple CoreMedia
 
 Browser detection is done using [browser gem](https://github.com/fnando/browser).
-
 
 
 ## Credits and License
