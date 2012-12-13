@@ -1,5 +1,4 @@
 module Browsernizer
-
   class Router
     attr_reader :config
 
@@ -10,6 +9,7 @@ module Browsernizer
     end
 
     def call(env)
+      @unsupported = nil
       @env = env
       @env["browsernizer"] = {
         "supported" => true,
@@ -67,14 +67,17 @@ module Browsernizer
 
     # supported by default
     def unsupported?
-      @config.get_supported.any? do |requirement|
-        supported = if requirement.respond_to?(:call)
-          requirement.call(raw_browser)
-        else
-          browser.meets?(requirement)
+      if @unsupported == nil
+        @unsupported = @config.get_supported.any? do |requirement|
+          supported = if requirement.respond_to?(:call)
+            requirement.call(raw_browser)
+          else
+            browser.meets?(requirement)
+          end
+          supported === false
         end
-        supported === false
       end
+      @unsupported
     end
   end
 

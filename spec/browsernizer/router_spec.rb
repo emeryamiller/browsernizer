@@ -115,6 +115,27 @@ describe Browsernizer::Router do
     it_behaves_like "unsupported browser"
   end
 
+  context "Memoize" do
+    it "the supported browser computation" do
+      subject.config.should_receive(:get_supported).once.and_call_original
+      app.should_receive(:call).with do |env|
+        env['browsernizer']['supported'].should be_true
+      end.once
+      subject.call(default_env)
+    end
+
+    it "returns unique responses for each call" do
+      app.should_receive(:call).twice
+      subject.call(default_env)
+      subject.send(:unsupported?).should be_false
+      new_env = default_env.merge({
+        "HTTP_USER_AGENT" => mobile_safari_agent
+      })
+      subject.call(new_env)
+      subject.send(:unsupported?).should be_true
+    end
+  end
+
   def chrome_agent(version)
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_2) AppleWebKit/535.7 (KHTML, like Gecko) Chrome/#{version} Safari/535.7"
   end
