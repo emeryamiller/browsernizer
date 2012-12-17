@@ -27,6 +27,7 @@ describe Browsernizer::Router do
         env['browsernizer']['supported'].should be_true
         env['browsernizer']['browser'].should == "Chrome"
         env['browsernizer']['version'].should == "7.1.1"
+        env['browsernizer']['os'].should == "mac"
       end
       subject.call(default_env)
     end
