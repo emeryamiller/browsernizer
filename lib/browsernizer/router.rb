@@ -14,7 +14,7 @@ module Browsernizer
       @env["browsernizer"] = {
         "supported" => true,
         "browser" => browser.name.to_s,
-        "version" => browser.version.to_s
+        "version" => browser.version.to_s,
         "os" => browser.platform.to_s
       }
       handle_request
