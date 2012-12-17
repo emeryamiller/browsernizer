@@ -15,6 +15,7 @@ module Browsernizer
         "supported" => true,
         "browser" => browser.name.to_s,
         "version" => browser.version.to_s
+        "os" => browser.os.to_s
       }
       handle_request
     end
