@@ -16,6 +16,7 @@ module Browsernizer
         "browser" => browser.name.to_s,
         "version" => browser.version.to_s,
         "os" => raw_browser.platform.to_s
+        "request_path" => @env['REQUEST_PATH']
       }
       handle_request
     end
