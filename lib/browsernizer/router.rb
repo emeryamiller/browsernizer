@@ -11,12 +11,13 @@ module Browsernizer
     def call(env)
       @unsupported = nil
       @env = env
+      path_info = @env['rack.session']['path_info'] ||= env['PATH_INFO']
       @env["browsernizer"] = {
         "supported" => true,
         "browser" => browser.name.to_s,
         "version" => browser.version.to_s,
         "os" => raw_browser.platform.to_s,
-        "request_path" => @env['REQUEST_PATH']
+        "path_info" => path_info
       }
       handle_request
     end
